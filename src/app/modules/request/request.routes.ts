@@ -9,16 +9,26 @@ const router = express.Router();
 router.post(
   "/donation-request",
   validateRequest(requestValidation.RequestSchema),
-  auth(),
+  auth("user", "admin"),
   requestController.donationRequest
 );
 
-router.get("/donation-request", auth(), requestController.myDonations);
+router.get(
+  "/myDonationsRequest",
+  auth("user", "admin"),
+  requestController.myDonationsAsDonor
+);
+
+router.get(
+  "/donationRequestForMe",
+  auth("user", "admin"),
+  requestController.donationRequestForMe
+);
 
 router.put(
   "/donation-request/:requestId",
   validateRequest(requestValidation.RequestStatusSchema),
-  auth(),
+  auth("user", "admin"),
   requestController.updatedDonationStatus
 );
 

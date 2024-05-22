@@ -18,8 +18,8 @@ const UserSchema = z.object({
     "O_NEGATIVE",
   ]),
   location: z.string({ required_error: "Location is required" }),
-  age: z.number({ required_error: "Age is required" }),
-  bio: z.string({ required_error: "Bio is required" }),
+  userName: z.string({ required_error: "User name is required" }),
+  availability: z.boolean({ required_error: "availability is required" }),
   lastDonationDate: z.string({
     required_error: "Last donation date is required",
   }),

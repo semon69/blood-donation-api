@@ -8,6 +8,8 @@ const donationRequest = async (req: any) => {
   const user = req?.user;
   const payload = req.body;
 
+  console.log(user);
+
   await prisma.user.findUniqueOrThrow({
     where: {
       id: payload.donorId,
@@ -24,7 +26,7 @@ const donationRequest = async (req: any) => {
     select: {
       id: true,
       donorId: true,
-      requesterId: false,
+      requesterId: true,
       phoneNumber: true,
       dateOfDonation: true,
       hospitalName: true,
@@ -43,7 +45,6 @@ const donationRequest = async (req: any) => {
           availability: true,
           createdAt: true,
           updatedAt: true,
-          userProfile: true,
         },
       },
     },
@@ -51,7 +52,51 @@ const donationRequest = async (req: any) => {
   return result;
 };
 
-const myDonations = async (req: any) => {
+const myDonationsRequest = async (req: any) => {
+  const user = req?.user;
+
+  const request = await prisma.request.findMany({
+    where: {
+      requesterId: user.id
+    }
+  })
+
+  if(!request.length){
+    throw new AppError(httpStatus.NOT_FOUND, "you don't have any request")
+  }
+
+
+  const result = await prisma.request.findMany({
+    where: {
+      requesterId: user.id,
+    },
+    select: {
+      id: true,
+      donorId: true,
+      requesterId: true,
+      phoneNumber: true,
+      dateOfDonation: true,
+      hospitalName: true,
+      hospitalAddress: true,
+      reason: true,
+      requestStatus: true,
+      createdAt: true,
+      updatedAt: true,
+      donor: {
+        select: {
+          id: true,
+          name: true,
+          email: true,
+          location: true,
+          bloodType: true,
+          availability: true,
+        },
+      },
+    },
+  });
+  return result;
+};
+const donationRequestForMe = async (req: any) => {
   const user = req?.user;
 
   const donor = await prisma.request.findMany({
@@ -126,6 +171,7 @@ const updatedDonationStatus = async (req: any) => {
 
 export const requestService = {
   donationRequest,
-  myDonations,
+  myDonationsRequest,
+  donationRequestForMe,
   updatedDonationStatus,
 };

@@ -17,51 +17,55 @@ const createUser = async (payload: any) => {
 
   const userData = {
     name: payload.name,
+    userName: payload.userName,
     email: payload.email,
     role,
     password: hashedPassword,
-    availability: payload.availability,
+    availability: payload?.availability,
     bloodType: payload.bloodType,
     location: payload.location,
+    lastDonationDate: payload.lastDonationDate
   };
   
-  const userProfileData = {
-    age: payload.age,
-    bio: payload.bio,
-    lastDonationDate: payload.lastDonationDate,
-  };
-
-  const result = await prisma.$transaction(async (transactionClient) => {
-    const createUserData = await transactionClient.user.create({
-      data: userData,
-      select: {
-        id: true,
-        name: true,
-        email: true,
-        role: true,
-        bloodType: true,
-        location: true,
-        availability: true,
-        createdAt: true,
-        updatedAt: true,
-        userProfile: true,
-      },
-    });
-
-    const createUserProfile = await transactionClient.userProfile.create({
-      data: {
-        userId: createUserData.id,
-        ...userProfileData,
-      },
-    });
-
-    // Update the selected user data to include the created userProfile
-    createUserData.userProfile = createUserProfile;
-
-    return createUserData;
+  // const userProfileData = {
+  //   age: payload.age,
+  //   bio: payload.bio,
+  //   lastDonationDate: payload.lastDonationDate,
+  // };
+  const createUserData = await prisma.user.create({
+    data: userData,
+    select: {
+      id: true,
+      name: true,
+      userName: true,
+      email: true,
+      role: true,
+      bloodType: true,
+      location: true,
+      availability: true,
+      lastDonationDate: true,
+      createdAt: true,
+      updatedAt: true,
+    },
   });
 
-  return result;
+  // const result = await prisma.$transaction(async (transactionClient) => {
+   
+
+  //   // const createUserProfile = await transactionClient.userProfile.create({
+  //   //   data: {
+  //   //     userId: createUserData.id,
+  //   //     ...userProfileData,
+  //   //   },
+  //   // });
+
+  //   // Update the selected user data to include the created userProfile
+  //   // createUserData.userProfile = createUserProfile;
+
+  //   return createUserData;
+  // });
+
+  return createUserData;
 };
 
 const getDonorLists = async (queryParams: any) => {
@@ -159,7 +163,6 @@ const getDonorLists = async (queryParams: any) => {
       availability: true,
       createdAt: true,
       updatedAt: true,
-      userProfile: true,
     },
   });
   const total = await prisma.user.count({
@@ -191,16 +194,15 @@ const getMyProfile = async (req:any) => {
       availability: true,
       createdAt: true,
       updatedAt: true,
-      userProfile: true,
     },
   });
   return result
 };
 
 const updateMyProfile = async(req:any) => {
-  const update = await prisma.userProfile.update({
+  const update = await prisma.user.update({
     where: {
-      userId: req.user.id
+      id: req.user.id
     },
     data: req.body
   })

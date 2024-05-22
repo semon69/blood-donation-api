@@ -15,8 +15,19 @@ const donationRequest = catchAsync(async (req, res) => {
   });
 });
 
-const myDonations = catchAsync(async (req, res) => {
-  const result = await requestService.myDonations(req);
+const myDonationsAsDonor = catchAsync(async (req, res) => {
+  const result = await requestService.myDonationsRequest(req);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Donation requests retrieved successfully",
+    data: result,
+  });
+});
+
+const donationRequestForMe = catchAsync(async (req, res) => {
+  const result = await requestService.donationRequestForMe(req);
 
   sendResponse(res, {
     statusCode: httpStatus.OK,
@@ -39,6 +50,7 @@ const updatedDonationStatus = catchAsync(async (req, res) => {
 
 export const requestController = {
   donationRequest,
-  myDonations,
+  myDonationsAsDonor,
+  donationRequestForMe,
   updatedDonationStatus
 };
