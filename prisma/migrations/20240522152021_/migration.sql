@@ -9,6 +9,8 @@ CREATE TABLE "user" (
     "email" TEXT NOT NULL,
     "role" TEXT NOT NULL,
     "password" TEXT NOT NULL,
+    "image" TEXT NOT NULL,
+    "contactNo" TEXT NOT NULL,
     "bloodType" TEXT NOT NULL,
     "location" TEXT NOT NULL,
     "availability" BOOLEAN NOT NULL DEFAULT false,

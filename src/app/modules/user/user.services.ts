@@ -5,28 +5,31 @@ import AppError from "../../errors/AppError";
 import httpStatus from "http-status";
 
 const createUser = async (payload: any) => {
-
-  if(payload.password != payload.confirmPassword){
-    throw new AppError(httpStatus.INTERNAL_SERVER_ERROR, "Password doesn't match") 
+  if (payload.password != payload.confirmPassword) {
+    throw new AppError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      "Password doesn't match"
+    );
   }
-
 
   const hashedPassword = await bcrypt.hash(payload.password, 12);
 
-  const role = "user"
+  const role = "user";
 
   const userData = {
     name: payload.name,
     userName: payload.userName,
     email: payload.email,
-    role,
     password: hashedPassword,
+    role,
+    image: payload.image,
+    contactNo: payload.contactNo,
     availability: payload?.availability,
     bloodType: payload.bloodType,
     location: payload.location,
-    lastDonationDate: payload.lastDonationDate
+    lastDonationDate: payload.lastDonationDate,
   };
-  
+
   // const userProfileData = {
   //   age: payload.age,
   //   bio: payload.bio,
@@ -40,6 +43,8 @@ const createUser = async (payload: any) => {
       userName: true,
       email: true,
       role: true,
+      image: true,
+      contactNo: true,
       bloodType: true,
       location: true,
       availability: true,
@@ -50,7 +55,6 @@ const createUser = async (payload: any) => {
   });
 
   // const result = await prisma.$transaction(async (transactionClient) => {
-   
 
   //   // const createUserProfile = await transactionClient.userProfile.create({
   //   //   data: {
@@ -179,8 +183,7 @@ const getDonorLists = async (queryParams: any) => {
   };
 };
 
-const getMyProfile = async (req:any) => {
-
+const getMyProfile = async (req: any) => {
   const result = await prisma.user.findUniqueOrThrow({
     where: {
       id: req.user.id,
@@ -189,6 +192,9 @@ const getMyProfile = async (req:any) => {
       id: true,
       name: true,
       email: true,
+      role: true,
+      image: true,
+      contactNo: true,
       bloodType: true,
       location: true,
       availability: true,
@@ -196,22 +202,22 @@ const getMyProfile = async (req:any) => {
       updatedAt: true,
     },
   });
-  return result
+  return result;
 };
 
-const updateMyProfile = async(req:any) => {
+const updateMyProfile = async (req: any) => {
   const update = await prisma.user.update({
     where: {
-      id: req.user.id
+      id: req.user.id,
     },
-    data: req.body
-  })
-  return update
-}
+    data: req.body,
+  });
+  return update;
+};
 
 export const userService = {
   createUser,
   getDonorLists,
   getMyProfile,
-  updateMyProfile
+  updateMyProfile,
 };

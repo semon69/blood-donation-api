@@ -20,6 +20,8 @@ model User {
   email            String    @unique
   role             String
   password         String
+  image            String
+  contactNo        String
   bloodType        String
   location         String
   availability     Boolean   @default(false)
