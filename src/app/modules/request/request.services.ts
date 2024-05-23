@@ -1,14 +1,11 @@
-import { Request } from "express";
+
 import { prisma } from "../../helpers/prisma";
 import AppError from "../../errors/AppError";
 import httpStatus from "http-status";
 
 const donationRequest = async (req: any) => {
-  //   console.log({ user }, { payload });
   const user = req?.user;
   const payload = req.body;
-
-  console.log(user);
 
   await prisma.user.findUniqueOrThrow({
     where: {
@@ -27,7 +24,7 @@ const donationRequest = async (req: any) => {
       id: true,
       donorId: true,
       requesterId: true,
-      phoneNumber: true,
+      contactNo: true,
       dateOfDonation: true,
       hospitalName: true,
       hospitalAddress: true,
@@ -40,6 +37,9 @@ const donationRequest = async (req: any) => {
           id: true,
           name: true,
           email: true,
+          userName: true,
+          image: true,
+          contactNo: true,
           bloodType: true,
           location: true,
           availability: true,
@@ -57,14 +57,13 @@ const myDonationsRequest = async (req: any) => {
 
   const request = await prisma.request.findMany({
     where: {
-      requesterId: user.id
-    }
-  })
+      requesterId: user.id,
+    },
+  });
 
-  if(!request.length){
-    throw new AppError(httpStatus.NOT_FOUND, "you don't have any request")
+  if (!request.length) {
+    throw new AppError(httpStatus.NOT_FOUND, "you don't have any request");
   }
-
 
   const result = await prisma.request.findMany({
     where: {
@@ -74,7 +73,7 @@ const myDonationsRequest = async (req: any) => {
       id: true,
       donorId: true,
       requesterId: true,
-      phoneNumber: true,
+      contactNo: true,
       dateOfDonation: true,
       hospitalName: true,
       hospitalAddress: true,
@@ -96,19 +95,19 @@ const myDonationsRequest = async (req: any) => {
   });
   return result;
 };
+
 const donationRequestForMe = async (req: any) => {
   const user = req?.user;
 
   const donor = await prisma.request.findMany({
     where: {
-      donorId: user.id
-    }
-  })
+      donorId: user.id,
+    },
+  });
 
-  if(!donor.length){
-    throw new AppError(httpStatus.NOT_FOUND, "you don't have any request")
+  if (!donor.length) {
+    throw new AppError(httpStatus.NOT_FOUND, "you don't have any request");
   }
-
 
   const result = await prisma.request.findMany({
     where: {
@@ -118,7 +117,7 @@ const donationRequestForMe = async (req: any) => {
       id: true,
       donorId: true,
       requesterId: true,
-      phoneNumber: true,
+      contactNo: true,
       dateOfDonation: true,
       hospitalName: true,
       hospitalAddress: true,
@@ -143,8 +142,8 @@ const donationRequestForMe = async (req: any) => {
 
 const updatedDonationStatus = async (req: any) => {
   const { requestId } = req.params;
-  const {status} = req.body;
-  
+  const { status } = req.body;
+
   const userData = await prisma.request.findUnique({
     where: {
       id: requestId,
@@ -152,21 +151,18 @@ const updatedDonationStatus = async (req: any) => {
   });
 
   if (!userData) {
-    throw new AppError(
-      httpStatus.NOT_FOUND,
-      "Request data not found"
-    );
+    throw new AppError(httpStatus.NOT_FOUND, "Request data not found");
   }
   // console.log(donorData);
   const updateStatus = await prisma.request.update({
     where: {
-      id: requestId
+      id: requestId,
     },
     data: {
-      requestStatus: status
-    }
-  })
-  return updateStatus
+      requestStatus: status,
+    },
+  });
+  return updateStatus;
 };
 
 export const requestService = {

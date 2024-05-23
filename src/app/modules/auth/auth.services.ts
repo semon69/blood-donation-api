@@ -43,12 +43,8 @@ const loginUser = async (payload: { email: string; password: string }) => {
 
 const changePassword = async (req: any) => {
 
-  console.log(req);
-
   const user = req?.user;
   const payload = req?.body;
-
-  console.log(user);
 
   const userData = await prisma.user.findUniqueOrThrow({
     where: {
