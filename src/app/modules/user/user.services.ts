@@ -162,6 +162,9 @@ const getDonorLists = async (queryParams: any) => {
       id: true,
       name: true,
       email: true,
+      userName: true,
+      image: true,
+      contactNo: true,
       bloodType: true,
       location: true,
       availability: true,
@@ -205,6 +208,31 @@ const getMyProfile = async (req: any) => {
   return result;
 };
 
+const getSingleDonor = async (req: any) => {
+
+  const {id} = req.params
+
+  const result = await prisma.user.findUniqueOrThrow({
+    where: {
+      id
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      image: true,
+      contactNo: true,
+      bloodType: true,
+      location: true,
+      availability: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+  return result;
+};
+
 const updateMyProfile = async (req: any) => {
   const update = await prisma.user.update({
     where: {
@@ -219,5 +247,6 @@ export const userService = {
   createUser,
   getDonorLists,
   getMyProfile,
+  getSingleDonor,
   updateMyProfile,
 };

@@ -34,6 +34,16 @@ const getMyProfile = catchAsync(async (req, res) => {
   });
 });
 
+const getSingleDonor = catchAsync(async (req, res) => {
+  const result = await userService.getSingleDonor(req);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Get Donor data successfully",
+    data: result,
+  });
+});
+
 const updateMyProfile = catchAsync(async (req, res) => {
   const result = await userService.updateMyProfile(req);
   sendResponse(res, {
@@ -48,5 +58,6 @@ export const userController = {
   createUser,
   getDonorLists,
   getMyProfile,
+  getSingleDonor,
   updateMyProfile
 };

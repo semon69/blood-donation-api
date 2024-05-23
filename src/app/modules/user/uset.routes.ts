@@ -14,12 +14,14 @@ router.post(
 
 router.get("/donor-list", userController.getDonorLists);
 
-router.get("/my-profile", auth(), userController.getMyProfile);
+router.get("/my-profile", auth("user", "admin"), userController.getMyProfile);
+
+router.get("/donor/:id", auth("user", "admin"), userController.getSingleDonor);
 
 router.put(
   "/my-profile",
   validateRequest(userValidation.UserProfileUpdateSchema),
-  auth(),
+  auth("user", "admin"),
   userController.updateMyProfile
 );
 
