@@ -86,6 +86,7 @@ const myDonationsRequest = async (req: any) => {
           id: true,
           name: true,
           email: true,
+          contactNo: true,
           location: true,
           bloodType: true,
           availability: true,

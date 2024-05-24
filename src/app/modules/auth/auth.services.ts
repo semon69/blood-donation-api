@@ -55,7 +55,7 @@ const changePassword = async (req: any) => {
   if (payload.newPassword != payload.confirmPassword) {
     throw new AppError(
       httpStatus.INTERNAL_SERVER_ERROR,
-      "Password doesn't match"
+      "New Password and Confirm doesn't match"
     );
   }
 
