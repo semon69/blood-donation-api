@@ -16,7 +16,7 @@ router.get("/donor-list", userController.getDonorLists);
 
 router.get("/my-profile", auth("user", "admin"), userController.getMyProfile);
 
-router.get("/donor/:id", auth("user", "admin"), userController.getSingleDonor);
+router.get("/donor/:id", userController.getSingleDonor);
 
 router.put(
   "/my-profile",

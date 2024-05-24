@@ -86,7 +86,10 @@ const getDonorLists = async (queryParams: any) => {
   const pageNumber = Number(page);
   const limitNumber = Number(limit);
 
-  const andConditions: Prisma.UserWhereInput[] = [];
+  // const andConditions: Prisma.UserWhereInput[] = [];
+  const andConditions: Prisma.UserWhereInput[] = [
+    { isActive: true },
+  ];
 
   if (searchTerm) {
     andConditions.push({
@@ -100,16 +103,6 @@ const getDonorLists = async (queryParams: any) => {
   }
 
   const filterDataArray = Object.keys(filterData);
-
-  //   if (filterDataArray.length > 0) {
-  //     andConditions.push({
-  //       AND: filterDataArray.map((key) => ({
-  //         [key]: {
-  //           equals: (filterData as any)[key],
-  //         },
-  //       })),
-  //     });
-  //   }
   if (filterDataArray.length > 0) {
     andConditions.push({
       AND: filterDataArray.map((key) => {
@@ -190,6 +183,7 @@ const getMyProfile = async (req: any) => {
   const result = await prisma.user.findUniqueOrThrow({
     where: {
       id: req.user.id,
+      isActive: true,
     },
     select: {
       id: true,
@@ -209,12 +203,12 @@ const getMyProfile = async (req: any) => {
 };
 
 const getSingleDonor = async (req: any) => {
-
-  const {id} = req.params
+  const { id } = req.params;
 
   const result = await prisma.user.findUniqueOrThrow({
     where: {
-      id
+      id,
+      isActive: true,
     },
     select: {
       id: true,
@@ -237,6 +231,7 @@ const updateMyProfile = async (req: any) => {
   const update = await prisma.user.update({
     where: {
       id: req.user.id,
+      isActive: true,
     },
     data: req.body,
   });
