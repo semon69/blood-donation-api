@@ -26,8 +26,13 @@ const UserSchema = z.object({
 });
 
 const UserProfileUpdateSchema = z.object({
-  bio: z.string().optional(),
-  age: z.number().optional(),
+  name: z.string().optional(),
+  email: z.string().optional(),
+  userName: z.string().optional(),
+  image: z.string().optional(),
+  location: z.string().optional(),
+  contactNo: z.string().optional(),
+  lastDonationDate: z.string().optional(),
 });
 
 export const userValidation = {

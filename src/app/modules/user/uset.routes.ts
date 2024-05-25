@@ -18,7 +18,7 @@ router.get("/my-profile", auth("user", "admin"), userController.getMyProfile);
 
 router.get("/donor/:id", userController.getSingleDonor);
 
-router.put(
+router.patch(
   "/my-profile",
   validateRequest(userValidation.UserProfileUpdateSchema),
   auth("user", "admin"),

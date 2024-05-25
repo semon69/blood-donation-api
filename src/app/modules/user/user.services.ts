@@ -189,12 +189,14 @@ const getMyProfile = async (req: any) => {
       id: true,
       name: true,
       email: true,
+      userName: true,
       role: true,
       image: true,
       contactNo: true,
       bloodType: true,
       location: true,
       availability: true,
+      lastDonationDate: true,
       createdAt: true,
       updatedAt: true,
     },
@@ -214,12 +216,14 @@ const getSingleDonor = async (req: any) => {
       id: true,
       name: true,
       email: true,
+      userName: true,
       role: true,
       image: true,
       contactNo: true,
       bloodType: true,
       location: true,
       availability: true,
+      lastDonationDate: true,
       createdAt: true,
       updatedAt: true,
     },
@@ -228,13 +232,25 @@ const getSingleDonor = async (req: any) => {
 };
 
 const updateMyProfile = async (req: any) => {
-  const update = await prisma.user.update({
+
+  const user = await prisma.user.findUnique({
     where: {
       id: req.user.id,
       isActive: true,
+    }
+  })
+
+  if(!user) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not founr")
+  }
+
+  const update = await prisma.user.update({
+    where: {
+      id: user.id,
     },
     data: req.body,
   });
+
   return update;
 };
 
