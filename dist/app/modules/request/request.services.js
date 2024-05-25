@@ -17,7 +17,6 @@ const prisma_1 = require("../../helpers/prisma");
 const AppError_1 = __importDefault(require("../../errors/AppError"));
 const http_status_1 = __importDefault(require("http-status"));
 const donationRequest = (req) => __awaiter(void 0, void 0, void 0, function* () {
-    //   console.log({ user }, { payload });
     const user = req === null || req === void 0 ? void 0 : req.user;
     const payload = req.body;
     yield prisma_1.prisma.user.findUniqueOrThrow({
@@ -31,8 +30,8 @@ const donationRequest = (req) => __awaiter(void 0, void 0, void 0, function* () 
         select: {
             id: true,
             donorId: true,
-            requesterId: false,
-            phoneNumber: true,
+            requesterId: true,
+            contactNo: true,
             dateOfDonation: true,
             hospitalName: true,
             hospitalAddress: true,
@@ -45,24 +44,67 @@ const donationRequest = (req) => __awaiter(void 0, void 0, void 0, function* () 
                     id: true,
                     name: true,
                     email: true,
+                    userName: true,
+                    image: true,
+                    contactNo: true,
                     bloodType: true,
                     location: true,
                     availability: true,
                     createdAt: true,
                     updatedAt: true,
-                    userProfile: true,
                 },
             },
         },
     });
     return result;
 });
-const myDonations = (req) => __awaiter(void 0, void 0, void 0, function* () {
+const myDonationsRequest = (req) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = req === null || req === void 0 ? void 0 : req.user;
+    const request = yield prisma_1.prisma.request.findMany({
+        where: {
+            requesterId: user.id,
+        },
+    });
+    if (!request.length) {
+        throw new AppError_1.default(http_status_1.default.NOT_FOUND, "you don't have any request");
+    }
+    const result = yield prisma_1.prisma.request.findMany({
+        where: {
+            requesterId: user.id,
+        },
+        select: {
+            id: true,
+            donorId: true,
+            requesterId: true,
+            contactNo: true,
+            dateOfDonation: true,
+            hospitalName: true,
+            hospitalAddress: true,
+            reason: true,
+            requestStatus: true,
+            createdAt: true,
+            updatedAt: true,
+            donor: {
+                select: {
+                    id: true,
+                    name: true,
+                    email: true,
+                    contactNo: true,
+                    location: true,
+                    bloodType: true,
+                    availability: true,
+                },
+            },
+        },
+    });
+    return result;
+});
+const donationRequestForMe = (req) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req === null || req === void 0 ? void 0 : req.user;
     const donor = yield prisma_1.prisma.request.findMany({
         where: {
-            donorId: user.id
-        }
+            donorId: user.id,
+        },
     });
     if (!donor.length) {
         throw new AppError_1.default(http_status_1.default.NOT_FOUND, "you don't have any request");
@@ -75,7 +117,7 @@ const myDonations = (req) => __awaiter(void 0, void 0, void 0, function* () {
             id: true,
             donorId: true,
             requesterId: true,
-            phoneNumber: true,
+            contactNo: true,
             dateOfDonation: true,
             hospitalName: true,
             hospitalAddress: true,
@@ -111,16 +153,17 @@ const updatedDonationStatus = (req) => __awaiter(void 0, void 0, void 0, functio
     // console.log(donorData);
     const updateStatus = yield prisma_1.prisma.request.update({
         where: {
-            id: requestId
+            id: requestId,
         },
         data: {
-            requestStatus: status
-        }
+            requestStatus: status,
+        },
     });
     return updateStatus;
 });
 exports.requestService = {
     donationRequest,
-    myDonations,
+    myDonationsRequest,
+    donationRequestForMe,
     updatedDonationStatus,
 };

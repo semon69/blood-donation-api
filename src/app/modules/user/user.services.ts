@@ -87,9 +87,7 @@ const getDonorLists = async (queryParams: any) => {
   const limitNumber = Number(limit);
 
   // const andConditions: Prisma.UserWhereInput[] = [];
-  const andConditions: Prisma.UserWhereInput[] = [
-    { isActive: true },
-  ];
+  const andConditions: Prisma.UserWhereInput[] = [{ isActive: true }];
 
   if (searchTerm) {
     andConditions.push({
@@ -179,6 +177,39 @@ const getDonorLists = async (queryParams: any) => {
   };
 };
 
+const getAllUserForAdmin = async () => {
+  const result = await prisma.user.findMany({
+    orderBy: {
+      createdAt: "desc",
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      isActive: true,
+      userName: true,
+      image: true,
+      contactNo: true,
+      bloodType: true,
+      location: true,
+      availability: true,
+      createdAt: true,
+      updatedAt: true,
+    },
+  });
+  const total = await prisma.user.count();
+
+  return {
+    meta: {
+      total,
+      page: 1,
+      limit: 10,
+    },
+    data: result,
+  };
+};
+
 const getMyProfile = async (req: any) => {
   const result = await prisma.user.findUniqueOrThrow({
     where: {
@@ -232,16 +263,15 @@ const getSingleDonor = async (req: any) => {
 };
 
 const updateMyProfile = async (req: any) => {
-
   const user = await prisma.user.findUnique({
     where: {
       id: req.user.id,
       isActive: true,
-    }
-  })
+    },
+  });
 
-  if(!user) {
-    throw new AppError(httpStatus.NOT_FOUND, "User not founr")
+  if (!user) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not founr");
   }
 
   const update = await prisma.user.update({
@@ -254,10 +284,63 @@ const updateMyProfile = async (req: any) => {
   return update;
 };
 
+const updateActiveStatus = async (req: any) => {
+  const { id } = req.params;
+  const { isActive } = req.body;
+
+  const userData = await prisma.user.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!userData) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found");
+  }
+  // console.log(donorData);
+  const updateStatus = await prisma.user.update({
+    where: {
+      id,
+    },
+    data: {
+      isActive: isActive,
+    },
+  });
+  return updateStatus;
+};
+
+const updateUserRole = async (req: any) => {
+  const { id } = req.params;
+  const { role } = req.body;
+
+  const userData = await prisma.user.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!userData) {
+    throw new AppError(httpStatus.NOT_FOUND, "User not found");
+  }
+  
+  const updateRole = await prisma.user.update({
+    where: {
+      id,
+    },
+    data: {
+      role: role,
+    },
+  });
+  return updateRole;
+};
+
 export const userService = {
   createUser,
   getDonorLists,
+  getAllUserForAdmin,
   getMyProfile,
   getSingleDonor,
   updateMyProfile,
+  updateActiveStatus,
+  updateUserRole
 };

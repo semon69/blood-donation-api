@@ -24,6 +24,17 @@ const getDonorLists = catchAsync(async (req, res) => {
   });
 });
 
+const getAllUserForAdmin = catchAsync(async (req, res) => {
+  const result = await userService.getAllUserForAdmin();
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Get ALl User successfully",
+    meta: result.meta,
+    data: result.data,
+  });
+});
+
 const getMyProfile = catchAsync(async (req, res) => {
   const result = await userService.getMyProfile(req);
   sendResponse(res, {
@@ -54,10 +65,33 @@ const updateMyProfile = catchAsync(async (req, res) => {
   });
 });
 
+const updateActiveStatus = catchAsync(async (req, res) => {
+  const result = await userService.updateActiveStatus(req);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User profile updated successfully",
+    data: result,
+  });
+});
+
+const updateUserRole = catchAsync(async (req, res) => {
+  const result = await userService.updateUserRole(req);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "User role updated successfully",
+    data: result,
+  });
+});
+
 export const userController = {
   createUser,
   getDonorLists,
+  getAllUserForAdmin,
   getMyProfile,
   getSingleDonor,
-  updateMyProfile
+  updateMyProfile,
+  updateActiveStatus,
+  updateUserRole
 };

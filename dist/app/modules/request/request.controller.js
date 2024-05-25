@@ -27,8 +27,17 @@ const donationRequest = (0, catchAsync_1.default)((req, res) => __awaiter(void 0
         data: result,
     });
 }));
-const myDonations = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield request_services_1.requestService.myDonations(req);
+const myDonationsAsDonor = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield request_services_1.requestService.myDonationsRequest(req);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "Donation requests retrieved successfully",
+        data: result,
+    });
+}));
+const donationRequestForMe = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield request_services_1.requestService.donationRequestForMe(req);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
@@ -47,6 +56,7 @@ const updatedDonationStatus = (0, catchAsync_1.default)((req, res) => __awaiter(
 }));
 exports.requestController = {
     donationRequest,
-    myDonations,
+    myDonationsAsDonor,
+    donationRequestForMe,
     updatedDonationStatus
 };

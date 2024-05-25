@@ -17,7 +17,7 @@ const config_1 = __importDefault(require("../config"));
 const http_status_1 = __importDefault(require("http-status"));
 const jwtHelpers_1 = require("../helpers/jwtHelpers");
 const AppError_1 = __importDefault(require("../errors/AppError"));
-const auth = () => {
+const auth = (...roles) => {
     return (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const token = req.headers.authorization;
@@ -26,7 +26,11 @@ const auth = () => {
                 throw new AppError_1.default(http_status_1.default.UNAUTHORIZED, "Unauthorized Access!");
             }
             const decodedUser = jwtHelpers_1.jwtHelpers.verifyToken(token, config_1.default.jwt.secret);
+            console.log(decodedUser);
             req.user = decodedUser;
+            if (roles.length && !roles.includes(decodedUser.role)) {
+                throw new AppError_1.default(http_status_1.default.FORBIDDEN, "Forbidden");
+            }
             next();
         }
         catch (error) {

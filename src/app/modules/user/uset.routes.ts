@@ -14,6 +14,8 @@ router.post(
 
 router.get("/donor-list", userController.getDonorLists);
 
+router.get("/allUser", auth("admin"), userController.getAllUserForAdmin);
+
 router.get("/my-profile", auth("user", "admin"), userController.getMyProfile);
 
 router.get("/donor/:id", userController.getSingleDonor);
@@ -23,6 +25,20 @@ router.patch(
   validateRequest(userValidation.UserProfileUpdateSchema),
   auth("user", "admin"),
   userController.updateMyProfile
+);
+
+router.patch(
+  "/updateActiveStatus/:id",
+  validateRequest(userValidation.updateActiveStatus),
+  auth("admin"),
+  userController.updateActiveStatus
+);
+
+router.patch(
+  "/updateUserRole/:id",
+  validateRequest(userValidation.updateUserRole),
+  auth("admin"),
+  userController.updateUserRole
 );
 
 export const UserRoutes = router;

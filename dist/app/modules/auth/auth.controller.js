@@ -19,7 +19,6 @@ const catchAsync_1 = __importDefault(require("../../helpers/catchAsync"));
 const auth_services_1 = require("./auth.services");
 const loginUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield auth_services_1.authService.loginUser(req.body);
-    // res.cookie("refreshToken", refreshToken, { secure: false, httpOnly: true });
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
@@ -27,6 +26,20 @@ const loginUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void
         data: result,
     });
 }));
+const changePassword = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield auth_services_1.authService.changePassword(req);
+    (0, sendResponse_1.default)(res, {
+        statusCode: 200,
+        success: true,
+        message: "Password changed successfull",
+        data: result,
+        // data: {
+        //     accessToken: result?.accessToken,
+        //     needPasswordChange: result?.needPasswordChange
+        // },
+    });
+}));
 exports.authController = {
-    loginUser
+    loginUser,
+    changePassword
 };

@@ -36,12 +36,31 @@ const getDonorLists = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, 
         data: result.data,
     });
 }));
+const getAllUserForAdmin = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_services_1.userService.getAllUserForAdmin();
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "Get ALl User successfully",
+        meta: result.meta,
+        data: result.data,
+    });
+}));
 const getMyProfile = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield user_services_1.userService.getMyProfile(req);
     (0, sendResponse_1.default)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
         message: "Profile retrieved successfully",
+        data: result,
+    });
+}));
+const getSingleDonor = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_services_1.userService.getSingleDonor(req);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "Get Donor data successfully",
         data: result,
     });
 }));
@@ -54,9 +73,31 @@ const updateMyProfile = (0, catchAsync_1.default)((req, res) => __awaiter(void 0
         data: result,
     });
 }));
+const updateActiveStatus = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_services_1.userService.updateActiveStatus(req);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "User profile updated successfully",
+        data: result,
+    });
+}));
+const updateUserRole = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_services_1.userService.updateUserRole(req);
+    (0, sendResponse_1.default)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "User role updated successfully",
+        data: result,
+    });
+}));
 exports.userController = {
     createUser,
     getDonorLists,
+    getAllUserForAdmin,
     getMyProfile,
-    updateMyProfile
+    getSingleDonor,
+    updateMyProfile,
+    updateActiveStatus,
+    updateUserRole
 };
