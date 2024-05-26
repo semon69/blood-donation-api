@@ -30,46 +30,6 @@ Welcome to the Blood Donation App API documentation. This API allows users to re
 - **ORM:** Prisma for PostgreSQL
 - **Authentication:** JWT (JSON Web Tokens)
 
-## Models
-
-### User Model
-
-Fields:
-- `id`
-- `name`
-- `email`
-- `password`
-- `bloodType`
-- `location`
-- `availability`
-- `createdAt`
-- `updatedAt`
-
-### Request Model
-
-Fields:
-- `id`
-- `donorId`
-- `requesterId`
-- `phoneNumber`
-- `dateOfDonation`
-- `hospitalName`
-- `hospitalAddress`
-- `reason`
-- `requestStatus`
-- `createdAt`
-- `updatedAt`
-
-### UserProfile Model
-
-Fields:
-- `id`
-- `userId`
-- `bio`
-- `age`
-- `lastDonationDate`
-- `createdAt`
-- `updatedAt`
 
 ## Endpoints
 
@@ -83,38 +43,18 @@ This endpoint handles user registration, creating both the user account and corr
 
 Endpoint: `POST /api/login`
 
-### Get Donor List
-
-Endpoint: `GET /api/donor-list`
-
-### Request A Donor For Blood
-
-Endpoint: `POST /api/donation-request`
-
-### Get My Donation Requests as Donor
-
-Endpoint: `GET /api/donation-request`
-
-### Update Request Application Status
-
-Endpoint: `PUT /api/donation-request/:requestId`
-
 ### Get My Profile
 
 Endpoint: `GET /api/my-profile`
 
-### Update My Profile
-
-Endpoint: `PUT /api/my-profile`
-
 ## Setup
 
-1. Clone the repository. `https://github.com/Porgramming-Hero-web-course/l2-b2-fullstack-track-assignment-8-semon69.git`
+1. Clone the repository. `https://github.com/semon69/blood-donation-api.git`
 2. Install dependencies: `npm install`
 3. Set up your PostgreSQL database and configure environment variables.
 4. Run migrations: `npx prisma migrate dev`
 5. Start the server: `npm run dev`
-6. Live Link: `https://blood-donation-servers.vercel.app`
+6. Live Link: `https://blood-donation-servers.vercel.app/`
 
 ## Usage
 
