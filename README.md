@@ -54,7 +54,7 @@ Endpoint: `GET /api/my-profile`
 3. Set up your PostgreSQL database and configure environment variables.
 4. Run migrations: `npx prisma migrate dev`
 5. Start the server: `npm run dev`
-6. Live Link: `https://blood-donation-servers.vercel.app/`
+6. Live Link: `https://blood-donation-backend-five.vercel.app/`
 
 ## Usage
 
