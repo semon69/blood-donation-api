@@ -77,7 +77,7 @@ const getDonorLists = async (queryParams: any) => {
 
   const {
     page = 1,
-    limit = 10,
+    limit = 20,
     sortBy,
     sortOrder,
     searchTerm,

@@ -85,7 +85,7 @@ const createUser = (payload) => __awaiter(void 0, void 0, void 0, function* () {
 });
 const getDonorLists = (queryParams) => __awaiter(void 0, void 0, void 0, function* () {
     //   const { searchTerm, ...filterData } = params;
-    const { page = 1, limit = 10, sortBy, sortOrder, searchTerm } = queryParams, filterData = __rest(queryParams, ["page", "limit", "sortBy", "sortOrder", "searchTerm"]);
+    const { page = 1, limit = 20, sortBy, sortOrder, searchTerm } = queryParams, filterData = __rest(queryParams, ["page", "limit", "sortBy", "sortOrder", "searchTerm"]);
     const pageNumber = Number(page);
     const limitNumber = Number(limit);
     // const andConditions: Prisma.UserWhereInput[] = [];

@@ -12,30 +12,35 @@ const globalErrorHandler_1 = __importDefault(require("./app/middlewares/globalEr
 const auth_routes_1 = require("./app/modules/auth/auth.routes");
 const request_routes_1 = require("./app/modules/request/request.routes");
 const app = (0, express_1.default)();
-app.use((0, cors_1.default)());
-// parser 
-app.use((0, cookie_parser_1.default)());
 app.use(express_1.default.json());
+app.use((0, cookie_parser_1.default)());
+// app.use(cors());
+app.use((0, cors_1.default)({
+    origin: ["https://blood-donation-client-nine.vercel.app"],
+    credentials: true,
+}));
+// https://blood-donation-client-nine.vercel.app/
+// parser
 app.use(express_1.default.urlencoded({ extended: true }));
 // app.use(co)
-app.set('query parser', 'simple');
+app.set("query parser", "simple");
 app.get("/", (req, res) => {
     res.send({
         message: "Blood Donation server is running",
     });
 });
-app.use('/api', uset_routes_1.UserRoutes);
-app.use('/api', auth_routes_1.AuthRoutes);
-app.use('/api', request_routes_1.RequestRoutes);
+app.use("/api", uset_routes_1.UserRoutes);
+app.use("/api", auth_routes_1.AuthRoutes);
+app.use("/api", request_routes_1.RequestRoutes);
 app.use(globalErrorHandler_1.default);
 app.use((req, res, next) => {
     res.status(http_status_1.default.NOT_FOUND).json({
         success: false,
-        message: 'API not found',
+        message: "API not found",
         errorDetails: {
             path: req.originalUrl,
-            message: 'Your request path is not found'
-        }
+            message: "Your request path is not found",
+        },
     });
 });
 exports.default = app;
