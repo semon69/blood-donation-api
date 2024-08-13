@@ -16,7 +16,10 @@ app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
 // app.use(cors());
 app.use((0, cors_1.default)({
-    origin: ["https://blood-donation-client-nine.vercel.app"],
+    origin: [
+        "https://blood-donation-client-nine.vercel.app",
+        "http://localhost:3000",
+    ],
     credentials: true,
 }));
 // https://blood-donation-client-nine.vercel.app/
