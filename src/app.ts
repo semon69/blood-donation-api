@@ -23,8 +23,6 @@ app.use(
   })
 );
 
-// https://blood-donation-client-nine.vercel.app/
-// parser
 
 app.use(express.urlencoded({ extended: true }));
 // app.use(co)
